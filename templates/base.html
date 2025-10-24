@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <!-- ==========================
+         META & TITLE
+    =========================== -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        {% block title %}Sentiment Analysis{% endblock %}
+    </title>
+
+    <!-- ==========================
+         FAVICON & FONTS
+    =========================== -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link 
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" 
+        rel="stylesheet"
+    >
+
+    <!-- ==========================
+         STYLESHEETS
+    =========================== -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" 
+        rel="stylesheet"
+        integrity="sha512-yH3rX4s0F+FX3KqN0TZUL2gV4Kwlj6sX01ZHgT6eHdU1Jd5Bg8iC9w4LZb5f7YXGmA8ok7v5ON8YI2VdC5dcZg==" 
+        crossorigin="anonymous" 
+        referrerpolicy="no-referrer"
+    >
+
+    <!-- ==========================
+         GLOBAL STYLES (Optional)
+    =========================== -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f7fe;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* Responsive helper class for centering content */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ==========================
+         MAIN CONTENT BLOCK
+    =========================== -->
+    {% block content %}
+    {% endblock %}
+
+    <!-- ==========================
+         SCRIPTS
+    =========================== -->
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
+</body>
+</html>

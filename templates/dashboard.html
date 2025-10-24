@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - Smart Review Alert Sistem{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex flex-col bg-[#f4f7fe]">
+
+    <!-- HEADER -->
+    <header class="header shadow-md bg-[#6C63FF] text-white">
+        <div class="container flex justify-between items-center py-4 px-6">
+            <h1 class="header-title text-xl md:text-2xl font-bold tracking-wide">
+                SMART REVIEW ALERT SISTEM
+            </h1>
+            <div class="header-actions flex items-center gap-4">
+                <span class="user-greeting text-sm md:text-base">
+                    Selamat Mengunjungi <strong>{{ username }}</strong>
+                </span>
+                <a href="/logout" class="btn-logout bg-white text-[#6C63FF] font-semibold px-4 py-2 rounded-md hover:bg-indigo-100 transition">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content flex-1 py-8">
+        <div class="container mx-auto px-4">
+            <div class="dashboard-grid grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+                <!-- LEFT COLUMN -->
+                <section class="left-column space-y-6">
+
+                    <!-- REVIEW INPUT -->
+                    <article class="card bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
+                        <header class="mb-4">
+                            <h3 class="card-title text-lg font-semibold text-gray-800 flex items-center gap-2">
+                                <i class="fas fa-comment-dots text-[#6C63FF]"></i>
+                                Input Ulasan
+                            </h3>
+                            <p class="card-description text-sm text-gray-500">
+                                Masukkan teks ulasan yang ingin dianalisis sentimennya
+                            </p>
+                        </header>
+
+                        <div class="card-content space-y-2">
+                            <textarea
+                                id="reviewText"
+                                class="w-full border border-gray-300 rounded-md p-3 focus:ring-2 focus:ring-[#6C63FF] focus:outline-none resize-y"
+                                placeholder="Contoh: Hotel ini sangat bagus, saya sangat puas dengan kualitasnya..."
+                                maxlength="2000"
+                            ></textarea>
+                            <div class="char-counter text-right text-xs text-gray-400">
+                                <span id="charCount">0</span>/2000 karakter
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- MODEL SELECTOR -->
+                    <article class="card bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
+                        <header class="mb-4">
+                            <h3 class="card-title text-lg font-semibold text-gray-800 flex items-center gap-2">
+                                <i class="fas fa-brain text-[#6C63FF]"></i>
+                                Pilih Model Machine Learning
+                            </h3>
+                            <p class="card-description text-sm text-gray-500">
+                                Pilih algoritma yang akan digunakan untuk prediksi sentimen
+                            </p>
+                        </header>
+
+                        <div class="card-content space-y-3">
+                            <!-- SVM -->
+                            <label class="model-option flex items-start gap-3 p-3 border border-gray-200 rounded-md hover:border-[#6C63FF] transition">
+                                <input type="radio" name="model" value="svm" checked class="mt-1 accent-[#6C63FF]">
+                                <div class="model-info flex justify-between w-full">
+                                    <div class="model-details">
+                                        <h4 class="font-semibold text-gray-800">Support Vector Machine (SVM)</h4>
+                                        <p class="text-sm text-gray-500">Model yang baik untuk klasifikasi teks dengan akurasi tinggi</p>
+                                    </div>
+                                    <span class="model-accuracy text-[#6C63FF] font-bold text-sm">95%</span>
+                                </div>
+                            </label>
+
+                            <!-- NAIVE BAYES -->
+                            <label class="model-option flex items-start gap-3 p-3 border border-gray-200 rounded-md hover:border-[#6C63FF] transition">
+                                <input type="radio" name="model" value="naive-bayes" class="mt-1 accent-[#6C63FF]">
+                                <div class="model-info flex justify-between w-full">
+                                    <div class="model-details">
+                                        <h4 class="font-semibold text-gray-800">Naive Bayes</h4>
+                                        <p class="text-sm text-gray-500">Model probabilistik yang cepat dan efisien</p>
+                                    </div>
+                                    <span class="model-accuracy text-[#6C63FF] font-bold text-sm">90%</span>
+                                </div>
+                            </label>
+                        </div>
+                    </article>
+
+                    <!-- ANALYZE BUTTON -->
+                    <button
+                        id="analyzeBtn"
+                        class="btn-analyze w-full py-3 rounded-md bg-[#6C63FF] text-white font-semibold hover:bg-[#5a55e5] transition disabled:bg-gray-400"
+                        disabled
+                    >
+                        Analisis Sentimen
+                    </button>
+                </section>
+
+                <!-- RIGHT COLUMN -->
+                <section class="right-column space-y-6">
+
+                    <!-- PREDICTION RESULTS -->
+                    <article class="card bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
+                        <header class="mb-4">
+                            <h3 class="card-title text-lg font-semibold text-gray-800">Hasil Prediksi</h3>
+                            <p class="card-description text-sm text-gray-500">
+                                Hasil analisis sentimen dari model Machine Learning
+                            </p>
+                        </header>
+
+                        <div id="predictionResults" class="prediction-empty text-center text-gray-400">
+                            <div class="empty-state flex flex-col items-center justify-center space-y-2">
+                                <i class="fas fa-star text-2xl text-gray-300"></i>
+                                <p class="text-sm">Belum ada hasil prediksi</p>
+                                <small>Masukkan teks dan pilih model untuk memulai analisis</small>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- TELEGRAM BOT -->
+                    <article class="card bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
+                        <header class="mb-4">
+                            <h3 class="card-title text-lg font-semibold text-gray-800 flex items-center gap-2">
+                                <i class="fab fa-telegram text-[#0088cc]"></i>
+                                Telegram Bot
+                            </h3>
+                            <p class="card-description text-sm text-gray-500">
+                                Cek hasil analisis sentimen melalui Telegram Bot
+                            </p>
+                        </header>
+
+                        <div class="card-content space-y-4">
+                            <div class="telegram-features text-left text-gray-700">
+                                <h4 class="font-semibold mb-2">Fitur Bot:</h4>
+                                <ul class="list-disc list-inside text-sm space-y-1">
+                                    <li>Analisis sentimen langsung via chat</li>
+                                    <li>Riwayat hasil prediksi</li>
+                                    <li>Notifikasi real-time</li>
+                                    <li>Multi-language support</li>
+                                </ul>
+                            </div>
+
+                            <button
+                                class="btn-telegram w-full bg-[#0088cc] text-white font-semibold py-2 rounded-md hover:bg-[#007ab8] transition"
+                                onclick="openTelegramBot()"
+                            >
+                                Buka Telegram Bot
+                            </button>
+
+                            <div class="bot-info text-center text-xs text-gray-500">
+                                Bot Username: <span class="font-semibold">@OneversiBot</span>
+                            </div>
+                        </div>
+                    </article>
+                </section>
+            </div>
+        </div>
+    </main>
+</div>
+{% endblock %}
