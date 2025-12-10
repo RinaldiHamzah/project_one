@@ -1,0 +1,1 @@
+project_one adalah sebuah proyek yang berisi kumpulan kode dasar, eksperimen, dan contoh implementasi Python untuk berbagai kebutuhan—mulai dari pemrosesan data, eksplorasi konsep pemrograman, hingga pembuatan modul sederhana. Repository ini dirancang sebagai ruang kerja awal (starter project) yang fleksibel dan mudah dikembangkan lebih lanjut sesuai kebutuhan.
